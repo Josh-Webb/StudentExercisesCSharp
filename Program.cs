@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StudentExercises
 {
@@ -75,6 +76,13 @@ namespace StudentExercises
                 Cohort = cohort34
             };
 
+            var oPlank = new Student(){
+                FirstName = "Olivia",
+                LastName = "Plank",
+                Slack = "Soft Boi",
+                Cohort = cohort33
+            };
+
             var bNilsen = new Instructor(){
                 FirstName = "Bryan",
                 LastName = "Wilson",
@@ -99,20 +107,23 @@ namespace StudentExercises
                 Speciality = "Hats"
             };
 
-             List<Student> students = new List<Student>();
-            students.Add(jWebb);
-            students.Add(eClarke);
-            students.Add(eAshe);
-            students.Add(kCard);
-            students.Add(dSteponawich);
+             List<Student> students = new List<Student>(){
+                 eAshe,
+                 kCard,
+                 dSteponawich,
+                 eClarke,
+                 jWebb,
+                 oPlank
+             };
 
-            List<Exercise> exercises = new List<Exercise>();
-            
-            exercises.Add(FizzBuzz);
-            exercises.Add(UrbanPlanner);
-            exercises.Add(DailyJournal);
-            exercises.Add(StudentExercises);
-            exercises.Add(Kennel);
+            List<Exercise> exercises = new List<Exercise>(){
+                FizzBuzz, UrbanPlanner, Kennel, DailyJournal, StudentExercises
+            };
+
+            List<Instructor> instructors = new List<Instructor>(){
+                bNilsen, aShaefer, rHecht
+            };
+
 
             foreach (Exercise exercise in exercises)
             {
@@ -134,6 +145,7 @@ namespace StudentExercises
             bNilsen.Assign(Kennel, eClarke);
             bNilsen.Assign(StudentExercises, jWebb);
             bNilsen.Assign(UrbanPlanner, jWebb);
+            bNilsen.Assign(DailyJournal, jWebb);
 
             rHecht.Assign(Kennel, eAshe);
             rHecht.Assign(DailyJournal, eAshe);
@@ -157,6 +169,18 @@ namespace StudentExercises
             aShaefer.Assign(StudentExercises, jWebb);
             aShaefer.Assign(UrbanPlanner, jWebb);
 
+            cohort32.Students.Add(jWebb);
+            cohort32.Students.Add(eClarke);
+            cohort33.Students.Add(kCard);
+            cohort33.Students.Add(oPlank);
+            cohort34.Students.Add(dSteponawich);
+            cohort34.Students.Add(eAshe);
+
+            
+            List<Cohort> cohorts = new List<Cohort>(){
+                cohort32, cohort33, cohort34
+            };
+
            
             foreach (Student student in students)
             {   Console.WriteLine($"{student.FirstName} is working on");
@@ -165,17 +189,66 @@ namespace StudentExercises
                     Console.WriteLine($"{exercise.Name}");
                 }
             }
+
+            Console.WriteLine($"Exercise 1 is {exercises[0].Name}");
+
+            IEnumerable<Exercise> javascriptExercises = from exercise in exercises
+                where exercise.Language == "Javascript"
+                select exercise;
+        
+            foreach (Exercise e in javascriptExercises) {
+            Console.WriteLine($"{e.Name} ${e.Language}");
+        }
+
+            IEnumerable<Student> cohort32List = from student in students
+                where student.Cohort == cohort32
+                select student;
+            foreach(Student s in cohort32List){
+                Console.WriteLine($"{s.FirstName} {s.LastName} is in Cohort 32.");
+            }
+
+            IEnumerable<Instructor> cohort32Instructors = from instructor in instructors
+                where instructor.Cohort == cohort32
+                select instructor;
+            foreach(Instructor i in cohort32Instructors){
+                Console.WriteLine($"{i.FirstName} {i.LastName} is an instructor for Cohort 32");
+            }
+
+            IEnumerable<Student> orderLastName = from student in students
+                orderby student.LastName
+                select student;
+                foreach(Student s in orderLastName){
+                Console.WriteLine($"{s.LastName}, {s.FirstName}");
+            }
+
+            IEnumerable<Student> noExercises = from student in students
+                where student.Exercises.Count == 0
+                select student;
+                foreach(Student s in noExercises){
+                    Console.WriteLine($"{s.FirstName} {s.LastName} doesn't have any exercises.");
+                }
+
+            var mostExercises = students.OrderByDescending(student => student.Exercises.Count()).Take(1);
+
+            foreach (Student s in mostExercises)
+            {
+                Console.WriteLine($"{s.FirstName} {s.LastName} has the most exercises.");
+            }
+
+
+
+           foreach (var cohort in cohorts)
+           {
+               Console.WriteLine($"{cohort.Name} has {cohort.Students.Count()} students.");
+           }
+             
+                
+   
+              
             
             
             
-            Console.WriteLine($"{jWebb.Cohort.Name}");
             
-            // Student JoshWebb = new Student(){
-            //     FirstName = "Josh",
-            //     LastName = "Webb",
-            //     Slack = "Josh Webb"
-            // };
-            // Console.WriteLine(JoshWebb.FirstName);
         }
     }
 }
