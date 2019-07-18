@@ -5,6 +5,6 @@ namespace StudentExercises {
     {
         public string Name { get; set; }
 
-        public List<Student> Students { get; set; }
+        public List<Student> Students = new List<Student>();
     }
 }
